@@ -3,7 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ErrorFallback } from './component/error';
-import { ImageDetailPage, ImageListPage } from './component/page';
+import { ImageDetailPage, ImageListPage } from './domain/page';
 
 function App() {
   return (

@@ -19,7 +19,7 @@ const request = async <T>(url: string): Promise<ResponseData<T>> => {
     throw new Error(`Http error(${result.status}): ${result.statusText}`);
 }
 
-type Image = {
+export type Image = {
     id: string;
     author: string;
     width: number;
