@@ -5,3 +5,8 @@ export const imageListState = atom({
     key: 'imageListState',
     default: imageListSelector
 });
+
+export const currentIdState = atom({
+    key: 'currentImageState',
+    default: ''
+});

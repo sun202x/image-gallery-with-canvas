@@ -1,13 +1,42 @@
 import { Link } from "@mui/material";
-import { useRecoilValue } from "recoil";
+import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { ImageType } from "../../api";
 import Table from "../../component/table";
 import Thumbnail from "../../component/thumbnail";
-import { imageListState } from "../../store/atom";
+import { currentIdState, imageListState } from "../../store/atom";
+import { refineImageUrl } from "../../util";
 
-const ImageListTable = (props: any) => {
+const ImageRow = ({ id, author, url, download_url }: ImageType) => {
+    const navigate = useNavigate();
+    const setCurrentImage = useSetRecoilState(currentIdState);
+
+    const thumbnail = useMemo(() => 
+        refineImageUrl(download_url, 300, 200)
+    , [download_url]);
+
+    const handleClick = () => {
+        setCurrentImage(id);
+        navigate('/detail');
+    }
+
+    return (
+        <Table.Row>
+            <Table.Cell>
+                <Thumbnail onClick={handleClick} src={thumbnail} />
+            </Table.Cell>
+            <Table.Cell>{id}</Table.Cell>
+            <Table.Cell>{author}</Table.Cell>
+            <Table.Cell>
+                <Link href={url}>이동</Link>
+            </Table.Cell>
+        </Table.Row>
+    );
+}
+
+const ImageListTable = () => {
     const imageList = useRecoilValue(imageListState);
-
-    const handleChangePage = () => {};
 
     return (
         <Table>
@@ -18,21 +47,10 @@ const ImageListTable = (props: any) => {
                 <Table.Cell>Link</Table.Cell>
             </Table.Head>
             <Table.Body>
-                {imageList.map(({ id, author, url, download_url }) => (
-                    <Table.Row key={id}>
-                        <Table.Cell>
-                            <Thumbnail src={download_url} />
-                        </Table.Cell>
-                        <Table.Cell>{id}</Table.Cell>
-                        <Table.Cell>{author}</Table.Cell>
-                        <Table.Cell>
-                            <Link href={url}>이동</Link>
-                        </Table.Cell>
-                    </Table.Row>
-                ))}
+                {imageList.map((image) => <ImageRow key={image.id} {...image} />)}
             </Table.Body>
         </Table>
     );
 }
 
-export default ImageListTable;
+export default React.memo(ImageListTable);

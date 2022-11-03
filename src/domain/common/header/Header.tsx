@@ -1,21 +1,22 @@
-import { Breadcrumbs, Link, Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import React from "react";
+import { useRecoilValue } from "recoil";
+import Breadcrumbs from "../../../component/breadcrumbs";
+import { currentIdState } from "../../../store/atom";
 
 const Header = (props: any) => {
+    const currentId = useRecoilValue(currentIdState);
 
     return (
         <Breadcrumbs aria-label="breadcrumb">
             <Link underline="hover" color="inherit" href="/">
                 Home
             </Link>
-            {/* <Link
-                underline="hover"
-                color="inherit"
-                href="/material-ui/getting-started/installation/"
-            >
-                Core
-            </Link>
-            <Typography color="text.primary">Breadcrumbs</Typography> */}
+            {currentId && 
+                <Typography color="text.primary">
+                    {currentId}
+                </Typography>
+            }
         </Breadcrumbs>
     );
 }

@@ -19,7 +19,7 @@ const request = async <T>(url: string): Promise<ResponseData<T>> => {
     throw new Error(`Http error(${result.status}): ${result.statusText}`);
 }
 
-export type Image = {
+export type ImageType = {
     id: string;
     author: string;
     width: number;
@@ -28,4 +28,4 @@ export type Image = {
     download_url: string;
 }
 
-export const fetchImageList = () => request<Image[]>('https://picsum.photos/v2/list');
+export const fetchImageList = () => request<ImageType[]>('https://picsum.photos/v2/list');

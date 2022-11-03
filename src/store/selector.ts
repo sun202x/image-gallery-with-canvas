@@ -1,6 +1,6 @@
 import { selector, selectorFamily } from "recoil";
 import { fetchImageList } from "../api";
-import { imageListState } from "./atom";
+import { currentIdState, imageListState } from "./atom";
 
 export const imageListSelector = selector({
     key: 'imageListSelector',
@@ -17,3 +17,17 @@ export const imageSelector = selectorFamily({
         return imageList.find(image => image.id === id);
     }
 });
+
+export const siblingImagesSelector = selector({
+    key: 'siblingImagesSelector',
+    get: ({ get }) => {
+        const imageList = get(imageListState);
+        const id = get(currentIdState);
+        const currentIndex = imageList.findIndex(image => image.id === id);
+
+        return [-1, 1].map(v => {
+            const index = (imageList.length + currentIndex + v) % imageList.length;
+            return imageList[index].id;
+        });
+    }
+})
